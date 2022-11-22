@@ -42,7 +42,7 @@ namespace ZebraAPP.KeyInput
             }
             catch(Exception e)
             {
-                Console.WriteLine("Node Red not connected");
+                Trace.WriteLine("Node Red not connected");
             }
         }
     }

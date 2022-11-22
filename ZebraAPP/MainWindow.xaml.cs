@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using ZebraAPP.Health;
 using ZebraAPP.KeyInput;
 
 namespace ZebraAPP
@@ -62,7 +63,7 @@ namespace ZebraAPP
                 var window = new RawInputReceiverWindow();
                 window.Input += (_sender, _e) =>
                 {
-                    if (_e != null && _e.Data.Device != null)
+                    if (_e != null && _e.Data.Device != null)   
                     {
                         try
                         {
@@ -156,6 +157,24 @@ namespace ZebraAPP
             });
             checkBarcodeEnterEndDev2.IsBackground = true;
             checkBarcodeEnterEndDev2.Start();
+            Thread healthThread = new Thread(() =>
+            {
+                ZebraCore zebraCore = new ZebraCore();
+                while (true)
+                {
+                    zebraCore.FilterScannerList();
+                    zebraCore.Connect();
+                    zebraCore.registerForEvents();
+                    System.Diagnostics.Trace.WriteLine("");
+                    zebraCore.ShowScanners();
+                    zebraCore.SendToKioskLife();
+                    zebraCore.ZebraScanners.Clear();
+                    Thread.Sleep(2000);
+                    zebraCore.Disconnect();
+                }
+            });
+            healthThread.IsBackground = true;
+            healthThread.Start();
         }
 
         private void MovingWin(object sender, RoutedEventArgs e)

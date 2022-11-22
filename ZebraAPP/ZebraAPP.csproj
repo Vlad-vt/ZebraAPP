@@ -13,10 +13,14 @@
     <PackageReference Include="MaterialDesignColors" Version="2.0.6" />
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="System.Windows.Extensions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Interop.CoreScanner">
+      <HintPath>Libs\Interop.CoreScanner.dll</HintPath>
+    </Reference>
     <Reference Include="RawInput.Sharp">
       <HintPath>library\RawInput.Sharp.dll</HintPath>
     </Reference>
