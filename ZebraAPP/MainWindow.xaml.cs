@@ -20,6 +20,7 @@ namespace ZebraAPP
         {
             InitializeComponent();
             _window = this;
+            #region Barcode reader
             List<BarcodeDevice> barcodeDevices = new List<BarcodeDevice>();
             Thread keyloggerThread = new Thread(delegate ()
             {
@@ -54,7 +55,12 @@ namespace ZebraAPP
                 }
                 try
                 {
-                    App.Current.Dispatcher.Invoke(() => Scanner2.Text = barcodeDevices[1].DeviceName);
+                    App.Current.Dispatcher.Invoke(() => {
+                        if (barcodeDevices.Count >= 2)
+                            Scanner2.Text = barcodeDevices[1].DeviceName;
+                        else
+                            Scanner2.Text = "Device not found!";
+                        });
                 }
                 catch (Exception)
                 {
@@ -157,6 +163,7 @@ namespace ZebraAPP
             });
             checkBarcodeEnterEndDev2.IsBackground = true;
             checkBarcodeEnterEndDev2.Start();
+            #endregion
             Thread healthThread = new Thread(() =>
             {
                 ZebraCore zebraCore = new ZebraCore();
@@ -169,6 +176,7 @@ namespace ZebraAPP
                     zebraCore.ShowScanners();
                     zebraCore.SendToKioskLife();
                     zebraCore.ZebraScanners.Clear();
+                    AppInfo.Text = "ZebraApp " + zebraCore.AppVersion;
                     Thread.Sleep(2000);
                     zebraCore.Disconnect();
                 }

@@ -34,6 +34,7 @@ namespace ZebraAPP.Health
         }
 
         #region Private Members
+        private string appVersion;
         private int handle;
         private string scannerName;// now scannerName = scannerID
         private string scannerID;// a unique id

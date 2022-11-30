@@ -7,11 +7,20 @@ using System.Threading;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net;
+using Newtonsoft.Json;
+using ZebraAPP.Version;
 
 namespace ZebraAPP.Health
 {
     public class ZebraCore : IZebraCoreCommands
     {
+        [JsonProperty("APP version")]
+        public string AppVersion { get; set; }
+
+        [JsonProperty("App logs")]
+        public List<string> AppLogs { get; set; }
+
+        [JsonProperty("Zebra Scanners")]
         public List<ZebraScanner> ZebraScanners;
 
         /// <summary>
@@ -33,8 +42,14 @@ namespace ZebraAPP.Health
 
         private XmlReader _xmlReader;
 
+        private Thread _versionThread;
+
         public ZebraCore()
         {
+            AppVersion = "v1.0.0";
+            _versionThread = new Thread(() => VersionMonitoring());
+            _versionThread.IsBackground = true;
+            _versionThread.Start();
             ZebraScanners = new List<ZebraScanner>();
             try
             {
@@ -44,12 +59,27 @@ namespace ZebraAPP.Health
             {
                 Trace.WriteLine(e.Message);
                 Thread.Sleep(1000);
-                _zebraCore = new CCoreScannerClass();
+                //_zebraCore = new CCoreScannerClass();
             }
             _selectedScannerType = 1;
             _zebraTypes = new short[IZebraCoreCommands.TOTAL_SCANNER_TYPES];
             _zebraSelectedTypes = new bool[IZebraCoreCommands.TOTAL_SCANNER_TYPES];
             _xmlReader = new XmlReader();
+        }
+
+        public void VersionMonitoring()
+        {
+            while (true)
+            {
+                if (File.Exists(Directory.GetCurrentDirectory() + "/version.json"))
+                {
+                    var json = File.ReadAllText(Directory.GetCurrentDirectory() + "/version.json");
+                    VersionFile versionFile = JsonConvert.DeserializeObject<VersionFile>(json);
+                    AppVersion = versionFile.AppVersion;
+                    AppLogs = versionFile.Logs;
+                }
+                Thread.Sleep(5000);
+            }
         }
 
         public void Disconnect()
@@ -87,6 +117,8 @@ namespace ZebraAPP.Health
 
             try
             {
+                if (_zebraCore == null)
+                    return;
                 _zebraCore.Open(appHandle, _zebraTypes, _zebraNumberOfTypes, out status);
                 DisplayResult(status, "OPEN");
                 if (IZebraCoreDefinitions.STATUS_SUCCESS == status)

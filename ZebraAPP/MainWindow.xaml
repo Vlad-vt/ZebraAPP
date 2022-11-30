@@ -45,7 +45,7 @@
                 </TextBlock>
                 <TextBox x:Name="Scanner2TextBox" Style="{StaticResource ModernTextbox}" Height="30" Width="455" Margin="15,12" IsReadOnly="True" Background="#7FFFFFFF"/>
             </StackPanel>
-            <TextBlock Grid.ColumnSpan="2" Text="ZebraKeylogger v1.0.0" FontSize="12" FontFamily="Verdana" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Bold" Foreground="White">
+            <TextBlock Grid.ColumnSpan="2" x:Name="AppInfo" Text="ZebraKeylogger v1.0.0" FontSize="12" FontFamily="Verdana" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Bold" Foreground="White">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="4" Direction="330" Color="Black" Opacity="0.5" BlurRadius="4"/>
                 </TextBlock.Effect>
