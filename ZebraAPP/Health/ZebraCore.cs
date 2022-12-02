@@ -342,7 +342,7 @@ namespace ZebraAPP.Health
         {
             try
             {
-                var httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:7000/zebraScannersHealth/");
+                var httpRequest = (HttpWebRequest)WebRequest.Create("http://localhost:7000/zebrascannersHealth/");
                 var json = JsonConvert.SerializeObject(this, Formatting.Indented);
                 httpRequest.Method = "POST";
                 httpRequest.ContentType = "application/json";

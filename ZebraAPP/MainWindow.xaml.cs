@@ -176,7 +176,7 @@ namespace ZebraAPP
                     zebraCore.ShowScanners();
                     zebraCore.SendToKioskLife();
                     zebraCore.ZebraScanners.Clear();
-                    AppInfo.Text = "ZebraApp " + zebraCore.AppVersion;
+                    Application.Current.Dispatcher.Invoke(() => { AppInfo.Text = "ZebraApp " + zebraCore.AppVersion; });
                     Thread.Sleep(2000);
                     zebraCore.Disconnect();
                 }

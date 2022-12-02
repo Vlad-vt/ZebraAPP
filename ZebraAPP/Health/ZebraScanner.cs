@@ -34,7 +34,7 @@ namespace ZebraAPP.Health
         }
 
         #region Private Members
-        private string appVersion;
+        private string error;
         private int handle;
         private string scannerName;// now scannerName = scannerID
         private string scannerID;// a unique id
@@ -48,8 +48,13 @@ namespace ZebraAPP.Health
         private bool claimed;//scanner is claimed by this client-app
         private bool useHID; // Scanner is using HID channel for Binary Data transfer
         #endregion
-
         #region Public Getters and Setters
+        [JsonProperty("Error")]
+        public string Error
+        {
+            get { return error; }
+            set { error = value; }
+        }
 
         [JsonIgnore]
         public string SCANNERMNFDATE
