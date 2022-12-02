@@ -7,7 +7,7 @@ namespace ZebraAPP.Health
     {
         public ZebraScanner()
         {
-
+            Error = "";
         }
 
         public void ClearValues()
