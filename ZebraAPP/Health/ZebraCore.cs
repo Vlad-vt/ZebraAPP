@@ -315,14 +315,41 @@ namespace ZebraAPP.Health
                     if (IZebraCoreDefinitions.STATUS_SUCCESS == status)
                     {
                         _zebraScannersAmount = numOfScanners;
-                        for (int i = 0; i < _zebraScannersAmount; i++)
+                        bool _changes = true;
+                        if (ZebraScanners.Count < 1)
                         {
-                            ZebraScanners.Add(new ZebraScanner());
+                            List<ZebraScanner> tempScanners = new List<ZebraScanner>();
+                            for (int i = 0; i < _zebraScannersAmount; i++)
+                            {
+                                tempScanners.Add(new ZebraScanner());
+                            }
+                            _xmlReader.ReadXmlString_GetScanners(outXML, ZebraScanners, numOfScanners, out nScannerCount);
+                            for (int i = 0; i < ZebraScanners.Count; i++)
+                            {
+                                for (int j = 0; j < tempScanners.Count; j++)
+                                {
+                                    if (tempScanners[j].SCANNERID == ZebraScanners[i].SCANNERID)
+                                    {
+                                        _changes = false;
+                                        ZebraScanners[i].Error = "-";
+                                    }
+                                }
+                                if (_changes)
+                                    ZebraScanners[i].Error = "Scanner is offline";
+                            }
+
                         }
-                        _xmlReader.ReadXmlString_GetScanners(outXML, ZebraScanners, numOfScanners, out nScannerCount);
-                        for (int i = 0; i < _zebraScannersAmount; i++)
+                        else
                         {
-                            ZebraScanners[i].ShowAllInfo();
+                            for (int i = 0; i < _zebraScannersAmount; i++)
+                            {
+                                ZebraScanners.Add(new ZebraScanner());
+                            }
+                            _xmlReader.ReadXmlString_GetScanners(outXML, ZebraScanners, numOfScanners, out nScannerCount);
+                            for (int i = 0; i < _zebraScannersAmount; i++)
+                            {
+                                ZebraScanners[i].ShowAllInfo();
+                            }
                         }
                     }
                 }

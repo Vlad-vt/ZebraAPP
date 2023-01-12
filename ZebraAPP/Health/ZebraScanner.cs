@@ -34,6 +34,7 @@ namespace ZebraAPP.Health
         }
 
         #region Private Members
+        private string error;
         private string appVersion;
         private int handle;
         private string scannerName;// now scannerName = scannerID
@@ -50,6 +51,19 @@ namespace ZebraAPP.Health
         #endregion
 
         #region Public Getters and Setters
+
+        [JsonProperty("Error")]
+        public string Error
+        {
+            get
+            {
+                return error;
+            }
+            set
+            {
+                error = value;
+            }
+        }
 
         [JsonIgnore]
         public string SCANNERMNFDATE
